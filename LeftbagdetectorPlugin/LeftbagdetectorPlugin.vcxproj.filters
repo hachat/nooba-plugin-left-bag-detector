@@ -35,23 +35,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="templateplugin.cpp">
+    <ClCompile Include="leftbagdetectorplugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_templateplugin.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_leftbagdetectorplugin.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_templateplugin.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_leftbagdetectorplugin.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="templateplugin_global.h">
+    <ClInclude Include="leftbagdetectorplugin_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="templateplugin.h">
+    <CustomBuild Include="leftbagdetectorplugin.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

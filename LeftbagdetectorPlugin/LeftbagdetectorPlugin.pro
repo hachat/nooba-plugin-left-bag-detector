@@ -6,19 +6,19 @@ CONFIG(release, debug|release):    message(Release build!)
 
 QT -= gui
 
-TARGET = templatePlugin
+TARGET = leftbagdetectorPlugin
 
-CONFIG(debug, debug|release): TARGET = TemplatePlugin_Debug
-CONFIG(release, debug|release): TARGET = TemplatePlugin_Release
+CONFIG(debug, debug|release): TARGET = LeftbagdetectorPlugin_Debug
+CONFIG(release, debug|release): TARGET = LeftbagdetectorPlugin_Release
 
 TEMPLATE = lib
 CONFIG += dll
 
-DEFINES += TEMPLATEPLUGIN_LIB
+DEFINES += LEFTBAGDETECTORPLUGIN_LIB
 
 # Input
-HEADERS += templateplugin.h templateplugin_global.h
-SOURCES += templateplugin.cpp
+HEADERS += leftbagdetectorplugin.h leftbagdetectorplugin_global.h
+SOURCES += leftbagdetectorplugin.cpp
 
 CONFIG(debug, debug|release): DESTDIR = $$PWD/../../../NoobaVSS_build/NoobaFE/Debug/plugins/
 CONFIG(release, debug|release): DESTDIR = $$PWD/../../../NoobaVSS_build/NoobaFE/Release/plugins/

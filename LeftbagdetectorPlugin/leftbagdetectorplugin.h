@@ -1,22 +1,22 @@
-#ifndef TEMPLATEPLUGIN_H
-#define TEMPLATEPLUGIN_H
+#ifndef LEFTBAGDETECTORPLUGIN_H
+#define LEFTBAGDETECTORPLUGIN_H
 
-#include "templateplugin_global.h"
+#include "leftbagdetectorplugin_global.h"
 #include "noobapluginapi.h"
 
 #include <QObject>
 
-class TEMPLATEPLUGIN_EXPORT TemplatePlugin: public NoobaPluginAPI
+class LEFTBAGDETECTORPLUGIN_EXPORT LeftbagdetectorPlugin: public NoobaPluginAPI
 {
     Q_OBJECT
     Q_INTERFACES(NoobaPluginAPI)
 #if QT_VERSION >= 0x050000
-    Q_PLUGIN_METADATA(IID "nooba.plugins.qt5.template-plugin" FILE "templatePlugin.json")
+    Q_PLUGIN_METADATA(IID "nooba.plugins.qt5.leftbagdetector-plugin" FILE "leftbagdetectorPlugin.json")
 #endif
 
 public:
-    TemplatePlugin();
-    ~TemplatePlugin();
+    LeftbagdetectorPlugin();
+    ~LeftbagdetectorPlugin();
 
     bool procFrame(const cv::Mat &in, cv::Mat &out, ProcParams &params);
     bool init();
@@ -37,4 +37,4 @@ public slots:
 
 };
 
-#endif // TEMPLATEPLUGIN_H
+#endif // LEFTBAGDETECTORPLUGIN_H

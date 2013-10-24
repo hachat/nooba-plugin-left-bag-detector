@@ -1,4 +1,4 @@
-nooba-plugin-template
+nooba-plugin-leftbagdetector
 =====================
 
-template plugin for the current Nooba plugin API
+leftbagdetector plugin for the current Nooba plugin API
