@@ -3,8 +3,15 @@
 
 #include "leftbagdetectorplugin_global.h"
 #include "noobapluginapi.h"
-
 #include <QObject>
+
+#include <NoobaVSSAD/readernode.h>
+#include <NoobaVSSAD/distancenode.h>
+#include <NoobaVSSAD/filewriternode.h>
+#include <NoobaVSSAD/speednode.h>
+#include <NoobaVSSAD/distancechange.h>
+#include <NoobaVSSAD/abandonedobjectnode.h>
+
 
 class LEFTBAGDETECTORPLUGIN_EXPORT LeftbagdetectorPlugin: public NoobaPluginAPI
 {
@@ -31,9 +38,24 @@ public slots:
      */
 //    void onIntParamChanged(const QString& varName, int val);
 //    void onDoubleParamChanged(const QString& varName, double val);
-//    void onStringParamChanged(const QString& varName, const QString& val);
+    void onStringParamChanged(const QString& varName, const QString& val);
 //    void onMultiValParamChanged(const QString& varName, const QString& val);
 
+    void onCaptureEvent(QList<DetectedEvent> captured_event);
+
+private:
+    ReaderNode blobPositionReader;
+    DistanceNode blobDistanceNode;
+    SpeedNode blobSpeedNode;
+    AbandonedObjectNode leftBagNode;
+    DistanceChange distanceChangeNode;
+    FileWriterNode leftBagWriterNode;
+
+    QList<DetectedEvent> startingDummy;
+
+    //Parameters
+    QString input_file;
+    QString output_file;
 
 };
 

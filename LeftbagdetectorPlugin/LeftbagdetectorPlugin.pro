@@ -17,8 +17,25 @@ CONFIG += dll
 DEFINES += LEFTBAGDETECTORPLUGIN_LIB
 
 # Input
-HEADERS += leftbagdetectorplugin.h leftbagdetectorplugin_global.h
-SOURCES += leftbagdetectorplugin.cpp
+HEADERS += leftbagdetectorplugin.h leftbagdetectorplugin_global.h \
+    NoobaVSSAD/detectedevent.h \
+    NoobaVSSAD/featurenode.h \
+    NoobaVSSAD/readernode.h \
+    NoobaVSSAD/distancenode.h \
+    NoobaVSSAD/speednode.h \
+    NoobaVSSAD/filewriternode.h \
+    NoobaVSSAD/distancechange.h \
+    NoobaVSSAD/abandonedobjectnode.h
+
+SOURCES += leftbagdetectorplugin.cpp \
+    NoobaVSSAD/detecedevent.cpp \
+    NoobaVSSAD/featurenode.cpp \
+    NoobaVSSAD/readernode.cpp \
+    NoobaVSSAD/distancenode.cpp \
+    NoobaVSSAD/speednode.cpp \
+    NoobaVSSAD/filewriternode.cpp \
+    NoobaVSSAD/distancechange.cpp \
+    NoobaVSSAD/abandonedobjectnode.cpp
 
 CONFIG(debug, debug|release): DESTDIR = $$PWD/../../../NoobaVSS_build/NoobaFE/Debug/plugins/
 CONFIG(release, debug|release): DESTDIR = $$PWD/../../../NoobaVSS_build/NoobaFE/Release/plugins/
