@@ -25,7 +25,7 @@ LeftbagdetectorPlugin::LeftbagdetectorPlugin()
 
 LeftbagdetectorPlugin::~LeftbagdetectorPlugin()
 {
-    debugMsg("LeftBag Plugin initialized");
+    debugMsg("LeftBag Plugin Distroyied");
 
 }
 
@@ -44,8 +44,25 @@ bool LeftbagdetectorPlugin::init()
 
     createStringParam("input_file",input_file,false);
     createStringParam("output_file",output_file,false);
+
+    createDoubleParam("still_object_speed_threshold",0.01,200.0,0.0);
+    createDoubleParam("leaving_object_speed_threshold",3.0,200.0,0.0);
+    createDoubleParam("distance_change_rate_threshold",1.0,200.0,0.0);
+    createDoubleParam("split_min_limit",250.0,500,0.0);
+    createDoubleParam("split_max_limit",300.0,500.0,0.0);
+
+
     blobPositionReader.openFile(input_file);
     leftBagWriterNode.openFile(output_file);
+
+    leftBagNode.setStillObjectSpeedThreshold(0.01);
+    leftBagNode.setLeavingObjectSpeedThreshold(3.0);
+    leftBagNode.setDistanceChangeRateThreshold(1.0);
+    leftBagNode.setSplitMinLimit(250.0);
+    leftBagNode.setSplitMaxLimit(300.0);
+
+    debugMsg("Left Bag Detector Plugin Initialized");
+
     return true;
 }
 
@@ -76,13 +93,38 @@ void LeftbagdetectorPlugin::onStringParamChanged(const QString& varName, const Q
         blobPositionReader.openFile(output_file);
         debugMsg("output_file set to "  + val);
     }
+
 }
 
+void LeftbagdetectorPlugin::onDoubleParamChanged(const QString& varName, double val){
+
+    if(varName == "still_object_speed_threshold"){
+        leftBagNode.setStillObjectSpeedThreshold(val);
+        debugMsg(QString("still_object_speed_threshold set to %1").arg(val));
+    }
+    else if(varName == "leaving_object_speed_threshold"){
+        leftBagNode.setLeavingObjectSpeedThreshold(val);
+        debugMsg(QString("leaving_object_speed_threshold set to %1").arg(val));
+    }
+    else if(varName == "distance_change_rate_threshold"){
+        leftBagNode.setDistanceChangeRateThreshold(val);
+        debugMsg(QString("distance_change_rate_threshold set to %1").arg(val));
+    }
+    else if(varName == "split_min_limit"){
+        leftBagNode.setSplitMinLimit(val);
+        debugMsg(QString("split_min_limit set to %1").arg(val));
+    }
+    else if(varName == "split_max_limit"){
+        leftBagNode.setSplitMaxLimit(val);
+        debugMsg(QString("split_max_limit set to %1").arg(val));
+    }
+
+}
 
 void LeftbagdetectorPlugin::onCaptureEvent(QList<DetectedEvent> captured_event){
 
     foreach(DetectedEvent e, captured_event){
-        debugMsg(e.getIdentifier() + " " + e.getMessage() + " " + e.getConfidence());
+        debugMsg(QString(e.getIdentifier() + " " + e.getMessage() + " %1").arg(e.getConfidence()));
     }
 }
 

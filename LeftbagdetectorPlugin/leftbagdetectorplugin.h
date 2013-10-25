@@ -37,7 +37,7 @@ public slots:
      * user.
      */
 //    void onIntParamChanged(const QString& varName, int val);
-//    void onDoubleParamChanged(const QString& varName, double val);
+    void onDoubleParamChanged(const QString& varName, double val);
     void onStringParamChanged(const QString& varName, const QString& val);
 //    void onMultiValParamChanged(const QString& varName, const QString& val);
 
