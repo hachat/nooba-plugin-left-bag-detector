@@ -43,6 +43,11 @@ public slots:
 
     void onCaptureEvent(QList<DetectedEvent> captured_event);
 
+    void inputData(PluginPassData* data);
+signals:
+    void generateEvent(QList<DetectedEvent> generated_event);
+
+
 private:
     ReaderNode blobPositionReader;
     DistanceNode blobDistanceNode;

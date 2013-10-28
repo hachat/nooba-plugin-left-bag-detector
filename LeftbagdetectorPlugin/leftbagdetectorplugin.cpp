@@ -7,13 +7,14 @@
 #include <opencv2/features2d/features2d.hpp>
 
 LeftbagdetectorPlugin::LeftbagdetectorPlugin()
-    :blobPositionReader(),
-      startingDummy()
 {
 
     //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
-    connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobDistanceNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobSpeedNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobDistanceNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobSpeedNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobDistanceNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobSpeedNode, SLOT(captureEvent(QList<DetectedEvent>)));
+
     connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &distanceChangeNode, SLOT(captureEvent(QList<DetectedEvent>)));
     connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
     connect(&distanceChangeNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
@@ -25,7 +26,7 @@ LeftbagdetectorPlugin::LeftbagdetectorPlugin()
 
 LeftbagdetectorPlugin::~LeftbagdetectorPlugin()
 {
-    debugMsg("LeftBag Plugin Distroyied");
+    debugMsg("Left Bag Plugin Distroyied");
 
 }
 
@@ -86,10 +87,12 @@ PluginInfo LeftbagdetectorPlugin::getPluginInfo() const
 
 void LeftbagdetectorPlugin::onStringParamChanged(const QString& varName, const QString& val){
     if(varName == "input_file"){
+        input_file = val;
         blobPositionReader.openFile(input_file);
         debugMsg("input_file set to "  + val);
     }
     else if(varName == "output_file"){
+        output_file = val;
         blobPositionReader.openFile(output_file);
         debugMsg("output_file set to "  + val);
     }
@@ -126,6 +129,17 @@ void LeftbagdetectorPlugin::onCaptureEvent(QList<DetectedEvent> captured_event){
     foreach(DetectedEvent e, captured_event){
         debugMsg(QString(e.getIdentifier() + " " + e.getMessage() + " %1").arg(e.getConfidence()));
     }
+}
+
+void LeftbagdetectorPlugin::inputData(PluginPassData* data){
+
+    QList<DetectedEvent> receivedEvents;
+    foreach(QString str,data->strList()){
+        //debugMsg("OKAY..." + str);
+        QList<QString> parameters = str.split(" ");
+        receivedEvents.append(DetectedEvent(parameters.at(0),parameters.at(1),parameters.at(2).toFloat()));
+    }
+    emit generateEvent(receivedEvents);
 }
 
 // see qt4 documentation for details on the macro (Qt Assistant app)
