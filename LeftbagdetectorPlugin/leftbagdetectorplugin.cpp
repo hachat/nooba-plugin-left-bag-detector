@@ -9,18 +9,6 @@
 LeftbagdetectorPlugin::LeftbagdetectorPlugin()
 {
 
-    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
-    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobDistanceNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobSpeedNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobDistanceNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobSpeedNode, SLOT(captureEvent(QList<DetectedEvent>)));
-
-    connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &distanceChangeNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(&distanceChangeNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(&blobSpeedNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(&leftBagNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagWriterNode, SLOT(captureEvent(QList<DetectedEvent>)));
-    connect(&leftBagNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
 
 }
 
@@ -40,8 +28,38 @@ bool LeftbagdetectorPlugin::procFrame( const cv::Mat &in, cv::Mat &out, ProcPara
 
 bool LeftbagdetectorPlugin::init()
 {
-    input_file = "/home/chathuranga/Programming/FYP/data/text/2013-10-24-sample-blobs.txt";
-    output_file = "/home/chathuranga/Programming/FYP/data/text/2013-10-24-blobs-sample-abobjects.txt";
+
+    QDateTime timestamp = QDateTime::currentDateTime();
+
+    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
+    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobDistanceNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    //connect(&blobPositionReader, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobSpeedNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobDistanceNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobSpeedNode, SLOT(captureEvent(QList<DetectedEvent>)));
+
+    connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &distanceChangeNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(&distanceChangeNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(&blobSpeedNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(&leftBagNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagWriterNode, SLOT(captureEvent(QList<DetectedEvent>)));
+    connect(&leftBagNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
+
+    //QDir dir(QCoreApplication::instance()->applicationDirPath());
+    QDir dir(QDir::home());
+    if(!dir.exists("NoobaVSS")){
+        dir.mkdir("NoobaVSS");
+    }
+    dir.cd("NoobaVSS");
+    if(!dir.exists("data")){
+        dir.mkdir("data");
+    }
+    dir.cd("data");
+    if(!dir.exists("text")){
+        dir.mkdir("text");
+    }
+    dir.cd("text");
+
+    output_file = dir.absoluteFilePath(timestamp.currentDateTime().toString("yyyy-MM-dd-hhmm") + "-abobjects.txt");
 
     createStringParam("input_file",input_file,false);
     createStringParam("output_file",output_file,false);
@@ -53,7 +71,7 @@ bool LeftbagdetectorPlugin::init()
     createDoubleParam("split_max_limit",300.0,500.0,0.0);
 
 
-    blobPositionReader.openFile(input_file);
+    //blobPositionReader.openFile(input_file);
     leftBagWriterNode.openFile(output_file);
 
     leftBagNode.setStillObjectSpeedThreshold(0.01);
@@ -131,11 +149,11 @@ void LeftbagdetectorPlugin::onCaptureEvent(QList<DetectedEvent> captured_event){
     }
 }
 
-void LeftbagdetectorPlugin::inputData(PluginPassData* data){
+void LeftbagdetectorPlugin::inputData(const PluginPassData& data){
 
     QList<DetectedEvent> receivedEvents;
-    foreach(QString str,data->strList()){
-        //debugMsg("OKAY..." + str);
+    foreach(QString str,data.strList()){
+        //debugMsg("recv" + str);
         QList<QString> parameters = str.split(" ");
         receivedEvents.append(DetectedEvent(parameters.at(0),parameters.at(1),parameters.at(2).toFloat()));
     }
