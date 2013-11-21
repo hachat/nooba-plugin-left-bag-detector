@@ -42,7 +42,12 @@ bool LeftbagdetectorPlugin::init()
     connect(&distanceChangeNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
     connect(&blobSpeedNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
     connect(&leftBagNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagWriterNode, SLOT(captureEvent(QList<DetectedEvent>)));
+
+    //connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
+    //connect(&distanceChangeNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
+    //connect(&blobSpeedNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
     connect(&leftBagNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
+    //connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
 
     //QDir dir(QCoreApplication::instance()->applicationDirPath());
     QDir dir(QDir::home());
@@ -141,7 +146,6 @@ void LeftbagdetectorPlugin::onDoubleParamChanged(const QString& varName, double 
     }
 
 }
-
 void LeftbagdetectorPlugin::onCaptureEvent(QList<DetectedEvent> captured_event){
 
     foreach(DetectedEvent e, captured_event){
