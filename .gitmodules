@@ -1,0 +1,3 @@
+[submodule "LeftbagdetectorPlugin/NoobaVSSAD"]
+	path = LeftbagdetectorPlugin/NoobaVSSAD
+	url = https://github.com/hachat/NoobaVSSAD.git
