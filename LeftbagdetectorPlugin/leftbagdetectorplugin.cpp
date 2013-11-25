@@ -153,10 +153,11 @@ void LeftbagdetectorPlugin::onCaptureEvent(QList<DetectedEvent> captured_event){
     }
 }
 
-void LeftbagdetectorPlugin::inputData(const PluginPassData& data){
-
+void LeftbagdetectorPlugin::inputData(const QStringList &strList, QList<QImage> imageList){
+    Q_UNUSED(imageList)
+    QStringList stringList = strList;
     QList<DetectedEvent> receivedEvents;
-    foreach(QString str,data.strList()){
+    foreach(QString str,stringList){
         //debugMsg("recv" + str);
         QList<QString> parameters = str.split(" ");
         receivedEvents.append(DetectedEvent(parameters.at(0),parameters.at(1),parameters.at(2).toFloat()));

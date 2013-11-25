@@ -43,7 +43,7 @@ public slots:
 
     void onCaptureEvent(QList<DetectedEvent> captured_event);
 
-    void inputData(const PluginPassData& data);
+    void inputData(const QStringList &strList, QList<QImage> imageList);
 signals:
     void generateEvent(QList<DetectedEvent> generated_event);
 
