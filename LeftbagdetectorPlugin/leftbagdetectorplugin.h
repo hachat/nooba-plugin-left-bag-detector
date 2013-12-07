@@ -5,6 +5,13 @@
 #include "noobapluginapi.h"
 #include <QObject>
 
+#define DEFAULT_STILL_OBJECT_SPEED_THRESHOLD 0.01
+#define DEFAULT_LEAVING_OBJECT_SPEED_THRESHOLD 3.0
+#define DEFAULT_DISTANCE_CHANGE_RATE_THRESHOLD 1.0
+#define DEFAULT_SPLIT_MIN_LIMIT 250.0
+#define DEFAULT_SPLIT_MAX_LIMIT 300.0
+
+
 #include <NoobaVSSAD/readernode.h>
 #include <NoobaVSSAD/distancenode.h>
 #include <NoobaVSSAD/filewriternode.h>
@@ -55,6 +62,7 @@ private:
     AbandonedObjectNode leftBagNode;
     DistanceChange distanceChangeNode;
     FileWriterNode leftBagWriterNode;
+    FileWriterNode blobWriterNode;
 
     QList<DetectedEvent> startingDummy;
 

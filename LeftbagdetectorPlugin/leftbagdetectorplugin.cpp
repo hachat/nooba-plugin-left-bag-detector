@@ -43,6 +43,8 @@ bool LeftbagdetectorPlugin::init()
     connect(&blobSpeedNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagNode, SLOT(captureEvent(QList<DetectedEvent>)));
     connect(&leftBagNode, SIGNAL(generateEvent(QList<DetectedEvent>)), &leftBagWriterNode, SLOT(captureEvent(QList<DetectedEvent>)));
 
+    connect(this, SIGNAL(generateEvent(QList<DetectedEvent>)), &blobWriterNode, SLOT(captureEvent(QList<DetectedEvent>)));
+
     //connect(&blobDistanceNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
     //connect(&distanceChangeNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
     //connect(&blobSpeedNode, SIGNAL(generateEvent(QList<DetectedEvent>)), this, SLOT(onCaptureEvent(QList<DetectedEvent>)));
@@ -66,24 +68,26 @@ bool LeftbagdetectorPlugin::init()
 
     output_file = dir.absoluteFilePath(timestamp.currentDateTime().toString("yyyy-MM-dd-hhmm") + "-abobjects.txt");
 
-    createStringParam("input_file",input_file,false);
-    createStringParam("output_file",output_file,false);
+    //createStringParam("input_file",input_file,false);
+    createStringParam("output_file",output_file,true);
 
-    createDoubleParam("still_object_speed_threshold",0.01,200.0,0.0);
-    createDoubleParam("leaving_object_speed_threshold",3.0,200.0,0.0);
-    createDoubleParam("distance_change_rate_threshold",1.0,200.0,0.0);
-    createDoubleParam("split_min_limit",250.0,500,0.0);
-    createDoubleParam("split_max_limit",300.0,500.0,0.0);
+    createDoubleParam("still_object_speed_threshold",DEFAULT_STILL_OBJECT_SPEED_THRESHOLD,200.0,0.0);
+    createDoubleParam("leaving_object_speed_threshold",DEFAULT_LEAVING_OBJECT_SPEED_THRESHOLD,200.0,0.0);
+    createDoubleParam("distance_change_rate_threshold",DEFAULT_DISTANCE_CHANGE_RATE_THRESHOLD,200.0,0.0);
+    createDoubleParam("split_min_limit",DEFAULT_SPLIT_MIN_LIMIT,500,0.0);
+    createDoubleParam("split_max_limit",DEFAULT_SPLIT_MAX_LIMIT,500.0,0.0);
 
 
     //blobPositionReader.openFile(input_file);
     leftBagWriterNode.openFile(output_file);
 
-    leftBagNode.setStillObjectSpeedThreshold(0.01);
-    leftBagNode.setLeavingObjectSpeedThreshold(3.0);
-    leftBagNode.setDistanceChangeRateThreshold(1.0);
-    leftBagNode.setSplitMinLimit(250.0);
-    leftBagNode.setSplitMaxLimit(300.0);
+    blobWriterNode.openFile(dir.absoluteFilePath(timestamp.currentDateTime().toString("yyyy-MM-dd-hhmm") + "-blobs.txt"));
+
+    leftBagNode.setStillObjectSpeedThreshold(DEFAULT_STILL_OBJECT_SPEED_THRESHOLD);
+    leftBagNode.setLeavingObjectSpeedThreshold(DEFAULT_LEAVING_OBJECT_SPEED_THRESHOLD);
+    leftBagNode.setDistanceChangeRateThreshold(DEFAULT_DISTANCE_CHANGE_RATE_THRESHOLD);
+    leftBagNode.setSplitMinLimit(DEFAULT_SPLIT_MIN_LIMIT);
+    leftBagNode.setSplitMaxLimit(DEFAULT_SPLIT_MAX_LIMIT);
 
     debugMsg("Left Bag Detector Plugin Initialized");
 
